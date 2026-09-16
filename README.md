@@ -1,18 +1,77 @@
-# Maquina Prensa Rolamentos
+# Plataforma de Monitoramento Industrial
 
-Sistema web para gerenciamento de uma maquina industrial, desenvolvido como um MVP de monitoramento e controle de producao.
+Sistema web para gerenciamento e monitoramento de maquinas industriais, desenvolvido a partir da Maquina Prensa Rolamentos como equipamento piloto.
 
-O projeto reune cadastro de usuarios, controle de acesso, pecas, manutencoes, registros de producao e um dashboard operacional. Nesta primeira fase, as leituras de vibracao, corrente, tensao e temperatura sao simuladas para demonstracao.
+O projeto reune cadastro de usuarios, controle de acesso, pecas, manutencoes, registros de producao e dashboards operacionais. A Prensa Rolamentos e o primeiro modelo de implementacao; a arquitetura foi pensada para receber outras maquinas, linhas e processos. Nesta primeira fase, as leituras de vibracao, corrente, tensao e temperatura sao simuladas para demonstracao.
+
+## Intencao do sistema
+
+O objetivo do projeto e criar uma plataforma aplicavel a diferentes maquinas industriais, aproximando o ambiente de producao de uma solucao SCADA: organizar usuarios e responsabilidades, registrar a operacao, acompanhar a producao, documentar manutencoes e transformar esses registros em informacoes para analise.
+
+O MVP ainda nao comanda a maquina nem recebe sensores reais. Ele demonstra o fluxo de dados que, futuramente, podera sair de uma IHM ou CLP e alimentar um sistema de monitoramento industrial. A integracao inicial sera desenvolvida para a Prensa Rolamentos no TIA Portal, mas o mesmo modelo devera ser configuravel para outros equipamentos.
+
+## Equipamento piloto e escalabilidade
+
+A Prensa Rolamentos foi escolhida como equipamento piloto porque seu projeto de automacao esta em fase avancada no TIA Portal. A IHM e as telas do equipamento servirao como primeiro ambiente de validacao da plataforma.
+
+O produto, entretanto, nao deve ser modelado como um sistema exclusivo dessa prensa. Cada maquina devera ser cadastrada com suas proprias caracteristicas:
+
+- identificacao, modelo, linha e localizacao;
+- sensores, unidades e limites operacionais;
+- pecas e pontos de manutencao;
+- estados e eventos do processo;
+- producao, turnos e operadores;
+- historico de falhas e intervencoes.
+
+```text
+Plataforma de monitoramento
+|-- Maquina A: Prensa Rolamentos
+|-- Maquina B: outra prensa
+|-- Maquina C: esteira ou torno
+`-- Maquina N: novo equipamento configurado
+```
+
+O nome Prensa Rolamentos identifica o piloto e a demonstracao atual. A plataforma deve permanecer neutra para que uma nova maquina seja adicionada por configuracao, sem reescrever o sistema.
+
+## Visao da interface
+
+### Menu operacional
+
+O menu principal concentra os modulos da Maquina Prensa Rolamentos. Cada area representa uma etapa do processo: administracao de usuarios, componentes, manutencao, producao e analise.
+
+![Menu principal da Maquina Prensa Rolamentos](docs/images/menu.png)
+
+### Dashboard de monitoramento
+
+O dashboard apresenta os indicadores que apoiam a tomada de decisao: pecas produzidas, tempo de funcionamento, paradas, disponibilidade e leituras dos sensores. Os valores dos sensores aparecem como simulacao para deixar claro que esta e uma etapa de prototipo.
+
+![Dashboard de monitoramento da maquina](docs/images/dashboard.png)
+
+### Fluxo de informacao
+
+```text
+Operador registra producao
+	+
+Manutencao registra paradas
+	+
+Sensores simulados geram leituras
+	|
+	v
+Banco H2 -> Dashboard -> Analise de indicadores
+			 |
+			 v
+	  Futura integracao com IHM/CLP e Power BI
+```
 
 ## Visao geral
 
 ```text
-Menu principal
+Menu principal da plataforma
 |-- Usuarios: cadastro protegido pelo Admin
 |-- Pecas: componentes da maquina
 |-- Manutencoes: historico de servicos e paradas
 |-- Producao: login do operador e log de producao
-`-- Dashboard: indicadores e analise inicial
+`-- Dashboard: indicadores e analise inicial por maquina
 ```
 
 ## Funcionalidades

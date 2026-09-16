@@ -1,41 +1,50 @@
 package com.testejava.teste;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "maquinas")
 public class Maquina {
-    private final String nome;
-    private final List<Peca> pecas = new ArrayList<>();
-    private final List<DadoManutencao> dadosManutencao = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Maquina(String nome) {
+    private String nome;
+    private String codigo;
+    private String localizacao;
+    private boolean ativa;
+
+    protected Maquina() {
+    }
+
+    public Maquina(String nome, String codigo, String localizacao) {
         this.nome = nome;
+        this.codigo = codigo;
+        this.localizacao = localizacao;
+        this.ativa = true;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void adicionarPeca(Peca peca) {
-        pecas.add(peca);
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void registrarManutencao(DadoManutencao dado) {
-        dadosManutencao.add(dado);
+    public String getLocalizacao() {
+        return localizacao;
     }
 
-    public List<Peca> getPecas() {
-        return Collections.unmodifiableList(pecas);
-    }
-
-    public List<DadoManutencao> getDadosManutencao() {
-        return Collections.unmodifiableList(dadosManutencao);
-    }
-
-    public int getTotalMinutosParada() {
-        return dadosManutencao.stream()
-                .mapToInt(DadoManutencao::getMinutosParada)
-                .sum();
+    public boolean isAtiva() {
+        return ativa;
     }
 }
