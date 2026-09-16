@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Prensa Rolamentos</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main class="container">
+    <header>
+        <a class="back-link" th:href="@{/menu}">&#8592; Menu principal</a>
+        <p class="eyebrow">MONITORAMENTO DA MÁQUINA</p>
+        <h1>Dashboard</h1>
+        <p class="subtitle">Produção, paradas e indicadores operacionais.</p>
+    </header>
+
+    <section class="metric-grid">
+        <article class="metric-card"><span>Peças produzidas</span><strong th:text="${pecasProduzidas}">0</strong><small>Total registrado</small></article>
+        <article class="metric-card"><span>Funcionamento</span><strong th:text="${minutosFuncionamento} + ' min'">0 min</strong><small>Tempo operacional</small></article>
+        <article class="metric-card"><span>Tempo parado</span><strong th:text="${minutosParada} + ' min'">0 min</strong><small>Manutenções registradas</small></article>
+        <article class="metric-card"><span>Paradas</span><strong th:text="${totalParadas}">0</strong><small>Ocorrências totais</small></article>
+        <article class="metric-card"><span>Disponibilidade</span><strong th:text="${disponibilidade} + '%'">0%</strong><small>Funcionamento operacional</small></article>
+        <article class="metric-card"><span>Alertas</span><strong th:text="${alertas}">0</strong><small>Leituras fora do limite</small></article>
+    </section>
+
+    <section class="panel sensor-panel">
+        <div class="section-heading"><div><p class="eyebrow">LEITURAS</p><h2>Sensores da máquina</h2></div><span class="simulation-badge">SIMULAÇÃO</span></div>
+        <div class="sensor-grid">
+            <article class="sensor-card" th:each="leitura : ${leituras}"><span th:text="${leitura.nome}">Vibração</span><strong th:text="${leitura.valor}">2.4 mm/s</strong><small th:class="${leitura.status == 'Normal' ? 'status-normal' : 'status-alert'}" th:text="${leitura.status}">Normal</small></article>
+        </div>
+    </section>
+
+    <section class="panel insight-panel">
+        <div><p class="eyebrow">ANÁLISE AUTOMÁTICA</p><h2 th:text="${analise}">Nenhuma anomalia detectada nas leituras atuais.</h2><p>Os limites são regras iniciais para demonstração. Com histórico real, eles poderão ser substituídos por um modelo de detecção de anomalias.</p></div>
+        <a class="primary-button" th:href="@{/producao}">Ver produção</a>
+    </section>
+</main>
+</body>
+</html>

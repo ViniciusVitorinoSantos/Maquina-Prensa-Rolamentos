@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de usuários</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <a class="back-link" th:href="@{/menu}">&#8592; Menu principal</a>
+            <p class="eyebrow">PAINEL DE DADOS</p>
+            <h1>Usuários</h1>
+            <p class="subtitle">Cadastre e gerencie os usuários do sistema.</p>
+        </header>
+
+        <section class="panel form-panel">
+            <div class="section-heading">
+                <h2 th:text="${usuario.id == null ? 'Novo usuário' : 'Editar usuário'}">Novo usuário</h2>
+                <span>
+                    <a class="link-button" th:if="${usuario.id != null}" th:href="@{/usuarios}">Cancelar</a>
+                    <form class="logout-form" th:action="@{/usuarios/logout}" method="post">
+                        <button class="logout-button" type="submit">Sair</button>
+                    </form>
+                </span>
+            </div>
+            <form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="fields">
+                    <label>Nome
+                        <input type="text" th:field="*{nome}" placeholder="Ex.: Ana Silva" required>
+                        <small class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></small>
+                    </label>
+                    <label>Ano de nascimento
+                        <input type="number" th:field="*{anoNascimento}" min="1900" max="2026" placeholder="1998" required>
+                        <small class="error" th:if="${#fields.hasErrors('anoNascimento')}" th:errors="*{anoNascimento}"></small>
+                    </label>
+                        <label>Login
+                            <input type="text" th:field="*{login}" placeholder="Ex.: operador1" required>
+                            <small class="error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></small>
+                        </label>
+                        <label>Senha
+                            <input type="password" th:field="*{senha}" placeholder="Senha de acesso" required>
+                            <small class="error" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></small>
+                    <label>CPF
+                        <input type="text" th:field="*{cpf}" placeholder="000.000.000-00" pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}" required>
+                        <small class="error" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></small>
+                    </label>
+                    <label>Nível de acesso
+                        <select th:field="*{nivel}" required>
+                            <option value="">Selecione um nível</option>
+                            <option th:each="nivel : ${niveis}" th:value="${nivel}" th:text="${nivel.descricao}"></option>
+                        </select>
+                        <small class="error" th:if="${#fields.hasErrors('nivel')}" th:errors="*{nivel}"></small>
+                    </label>
+                </div>
+                <button class="primary-button" type="submit" th:text="${usuario.id == null ? 'Cadastrar usuário' : 'Salvar alterações'}">Cadastrar usuário</button>
+            </form>
+        </section>
+
+        <p class="message" th:if="${mensagem}" th:text="${mensagem}"></p>
+
+        <section class="panel list-panel">
+            <div class="section-heading">
+                <h2>Usuários cadastrados</h2>
+                <span class="count" th:text="${usuarios.size()} + ' registro(s)'">0 registro(s)</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Nome</th><th>CPF</th><th>Ano</th><th>Nível</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${usuarios}">
+                            <td th:text="${item.id}">1</td>
+                            <td th:text="${item.nome}">Ana Silva</td>
+                            <td th:text="${item.cpf}">000.000.000-00</td>
+                            <td th:text="${item.anoNascimento}">1998</td>
+                            <td th:text="${item.nivel != null ? item.nivel.descricao : 'Não informado'}">Operador</td>
+                            <td class="actions">
+                                <a class="edit-link" th:href="@{/usuarios/editar/{id}(id=${item.id})}">Editar</a>
+                                <form th:action="@{/usuarios/excluir/{id}(id=${item.id})}" method="post">
+                                    <button class="delete-button" type="submit">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${usuarios.empty}"><td class="empty" colspan="6">Nenhum usuário cadastrado.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

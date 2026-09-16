@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peças | Prensa Rolamentos</title><link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main class="container">
+    <header><a class="back-link" th:href="@{/menu}">&#8592; Menu principal</a><p class="eyebrow">PRENSA ROLAMENTOS</p><h1>Peças</h1><p class="subtitle">Componentes cadastrados na máquina.</p></header>
+    <section class="panel form-panel">
+        <h2>Nova peça</h2>
+        <form th:action="@{/pecas/salvar}" th:object="${peca}" method="post">
+            <div class="fields two-columns">
+                <label>Nome da peça<input type="text" th:field="*{nome}" placeholder="Ex.: Rolamento principal" required></label>
+                <label>Código<input type="text" th:field="*{codigo}" placeholder="Ex.: ROL-001" required></label>
+            </div>
+            <button class="primary-button" type="submit">Cadastrar peça</button>
+        </form>
+    </section>
+    <p class="message" th:if="${mensagem}" th:text="${mensagem}"></p>
+    <section class="panel list-panel"><div class="section-heading"><h2>Peças da máquina</h2><span class="count" th:text="${pecas.size()} + ' registro(s)'">0 registro(s)</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>ID</th><th>Nome</th><th>Código</th></tr></thead><tbody>
+            <tr th:each="peca : ${pecas}"><td th:text="${peca.id}">1</td><td th:text="${peca.nome}">Rolamento principal</td><td th:text="${peca.codigo}">ROL-001</td></tr>
+            <tr th:if="${pecas.empty}"><td class="empty" colspan="3">Nenhuma peça cadastrada.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+</body></html>

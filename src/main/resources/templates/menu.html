@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prensa Rolamentos</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <main class="container home-container">
+        <header class="hero-header">
+            <p class="eyebrow">SISTEMA DE CONTROLE</p>
+            <h1>MAQUINA PRENSA ROLAMENTOS</h1>
+            <p class="owner-name">VINICIUS VITORINO DOS SANTOS</p>
+            <p class="subtitle">Painel principal da máquina</p>
+        </header>
+
+        <nav class="menu-grid" aria-label="Menu principal">
+            <a class="menu-option" th:href="@{/usuarios}">
+                <span class="menu-number">01</span>
+                <span>
+                    <strong>Usuários</strong>
+                    <small>Cadastrar, listar, editar e excluir</small>
+                </span>
+                <span class="menu-arrow">&#8594;</span>
+            </a>
+            <a class="menu-option" th:href="@{/pecas}">
+                <span class="menu-number">02</span>
+                <span><strong>Peças</strong><small>Componentes da máquina</small></span>
+                <span class="menu-arrow">&#8594;</span>
+            </a>
+            <a class="menu-option" th:href="@{/manutencoes}">
+                <span class="menu-number">03</span>
+                <span><strong>Manutenções</strong><small>Paradas e serviços realizados</small></span>
+                <span class="menu-arrow">&#8594;</span>
+            </a>
+            <a class="menu-option" th:href="@{/producao}">
+                <span class="menu-number">04</span>
+                <span><strong>Produção</strong><small>Login do operador, tempo de máquina e peças produzidas</small></span>
+                <span class="menu-arrow">&#8594;</span>
+            </a>
+            <a class="menu-option" th:href="@{/dashboard}">
+                <span class="menu-number">05</span>
+                <span><strong>Dashboard</strong><small>Indicadores e leituras da máquina</small></span>
+                <span class="menu-arrow">&#8594;</span>
+            </a>
+        </nav>
+    </main>
+</body>
+</html>

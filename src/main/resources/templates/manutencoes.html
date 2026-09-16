@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manutenções | Prensa Rolamentos</title><link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main class="container">
+    <header><a class="back-link" th:href="@{/menu}">&#8592; Menu principal</a><p class="eyebrow">PRENSA ROLAMENTOS</p><h1>Manutenções</h1><p class="subtitle">Registre as paradas e os serviços realizados.</p></header>
+    <section class="panel form-panel">
+        <h2>Registrar manutenção</h2>
+        <form th:action="@{/manutencoes/salvar}" th:object="${manutencao}" method="post">
+            <div class="fields maintenance-fields">
+                <label>Data<input type="date" th:field="*{data}" required></label>
+                <label>Descrição<input type="text" th:field="*{descricao}" placeholder="Ex.: Troca do rolamento" required></label>
+                <label>Parada (minutos)<input type="number" th:field="*{minutosParada}" min="0" placeholder="30" required></label>
+            </div>
+            <button class="primary-button" type="submit">Registrar manutenção</button>
+        </form>
+    </section>
+    <p class="message" th:if="${mensagem}" th:text="${mensagem}"></p>
+    <section class="panel list-panel"><div class="section-heading"><h2>Histórico de manutenções</h2><span class="count" th:text="${manutencoes.size()} + ' registro(s)'">0 registro(s)</span></div>
+        <div class="table-wrapper"><table><thead><tr><th>ID</th><th>Data</th><th>Descrição</th><th>Parada</th></tr></thead><tbody>
+            <tr th:each="item : ${manutencoes}"><td th:text="${item.id}">1</td><td th:text="${item.data}">2026-09-16</td><td th:text="${item.descricao}">Troca do rolamento</td><td th:text="${item.minutosParada} + ' min'">30 min</td></tr>
+            <tr th:if="${manutencoes.empty}"><td class="empty" colspan="4">Nenhuma manutenção registrada.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+</body></html>

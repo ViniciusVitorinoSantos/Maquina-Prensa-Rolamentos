@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatorio de producao | Prensa Rolamentos</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main class="container">
+    <header>
+        <a class="back-link" th:href="@{/menu}">&#8592; Menu principal</a>
+        <form class="logout-form production-logout" th:action="@{/producao/logout}" method="post">
+            <button class="logout-button" type="submit">Sair</button>
+        </form>
+        <p class="eyebrow">PRENSA ROLAMENTOS</p>
+        <h1>Relatorio de producao</h1>
+        <p class="subtitle">Registre o turno do operador e acompanhe a producao.</p>
+    </header>
+
+    <section class="panel form-panel">
+        <h2>Novo log de producao</h2>
+        <p class="form-note" th:if="${operadores.empty}">Cadastre um usuario com nivel Operador antes de registrar a producao.</p>
+        <form th:action="@{/producao/salvar}" th:object="${registro}" method="post">
+            <div class="fields production-fields">
+                <label>Operador
+                    <select th:field="*{operador}" required>
+                        <option value="">Selecione o operador</option>
+                        <option th:each="operador : ${operadores}" th:value="${operador.id}" th:text="${operador.nome}"></option>
+                    </select>
+                    <small class="error" th:if="${#fields.hasErrors('operador')}" th:errors="*{operador}"></small>
+                </label>
+                <label>Inicio
+                    <input type="datetime-local" th:field="*{inicio}" required>
+                    <small class="error" th:if="${#fields.hasErrors('inicio')}" th:errors="*{inicio}"></small>
+                </label>
+                <label>Fim
+                    <input type="datetime-local" th:field="*{fim}" required>
+                    <small class="error" th:if="${#fields.hasErrors('fim')}" th:errors="*{fim}"></small>
+                </label>
+                <label>Peças produzidas
+                    <input type="number" th:field="*{quantidadeProduzida}" min="0" placeholder="100" required>
+                    <small class="error" th:if="${#fields.hasErrors('quantidadeProduzida')}" th:errors="*{quantidadeProduzida}"></small>
+                </label>
+            </div>
+            <button class="primary-button" type="submit" th:disabled="${operadores.empty}">Registrar produção</button>
+        </form>
+    </section>
+
+    <p class="message" th:if="${mensagem}" th:text="${mensagem}"></p>
+
+    <section class="panel list-panel">
+        <div class="section-heading">
+            <h2>Logs registrados</h2>
+            <span class="count" th:text="${registros.size()} + ' registro(s)'">0 registro(s)</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>ID</th><th>Operador</th><th>Inicio</th><th>Fim</th><th>Funcionamento</th><th>Peças</th></tr></thead>
+                <tbody>
+                    <tr th:each="item : ${registros}">
+                        <td th:text="${item.id}">1</td>
+                        <td th:text="${item.operador.nome}">Ana</td>
+                        <td th:text="${#temporals.format(item.inicio, 'dd/MM/yyyy HH:mm')}">16/09/2026 08:00</td>
+                        <td th:text="${#temporals.format(item.fim, 'dd/MM/yyyy HH:mm')}">16/09/2026 12:00</td>
+                        <td th:text="${item.minutosFuncionamento} + ' min'">240 min</td>
+                        <td th:text="${item.quantidadeProduzida}">100</td>
+                    </tr>
+                    <tr th:if="${registros.empty}"><td class="empty" colspan="6">Nenhum log de produção registrado.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>
