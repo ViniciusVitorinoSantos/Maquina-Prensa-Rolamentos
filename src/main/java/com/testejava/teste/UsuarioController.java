@@ -60,6 +60,13 @@ public class UsuarioController {
             return "redirect:/usuarios";
         }
 
+        boolean cpfJaCadastrado = usuario.getId() == null
+                ? repository.existsByCpf(usuario.getCpf())
+                : repository.existsByCpfAndIdNot(usuario.getCpf(), usuario.getId());
+        if (cpfJaCadastrado) {
+            result.rejectValue("cpf", "cpf.duplicado", "Este CPF ja esta cadastrado.");
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("usuarios", repository.findAll());
             model.addAttribute("niveis", NivelUsuario.values());

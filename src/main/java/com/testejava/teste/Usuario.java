@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Max;
@@ -29,6 +30,7 @@ public class Usuario {
 
     @NotBlank(message = "Informe o CPF.")
     @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "Use o formato 000.000.000-00.")
+    @Column(unique = true, nullable = false)
     private String cpf;
 
     private String login;
